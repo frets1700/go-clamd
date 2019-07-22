@@ -42,6 +42,7 @@ const (
 
 type Clamd struct {
 	address string
+	conn    *CLAMDConn
 }
 
 type Stats struct {
@@ -81,6 +82,15 @@ func (c *Clamd) newConnection() (conn *CLAMDConn, err error) {
 	}
 
 	return
+}
+
+func (c *Clamd) GetCurrentConnection() (conn *CLAMDConn, err error) {
+	conn = c.conn
+	if conn == nil {
+		return nil, errors.New("no connection available")
+	}
+
+	return conn, nil
 }
 
 func (c *Clamd) simpleCommand(command string) (chan *ScanResult, error) {
